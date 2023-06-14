@@ -7,7 +7,7 @@ using MonitoringSystem.Domein.Entities;
 
 namespace MonitoringSystem.Application.UseCases.Students.Commands.CreateStudent;
 
-public class CreateSubjectCommand : IRequest<StudentDto>
+public class CreateStudentCommand : IRequest<StudentDto>
 {
     public string FirstName { get; set; }
 
@@ -20,7 +20,7 @@ public class CreateSubjectCommand : IRequest<StudentDto>
     public string Email { get; set; }
 
 }
-public class CreateStudentCommandHandler : IRequestHandler<CreateSubjectCommand, StudentDto>
+public class CreateStudentCommandHandler : IRequestHandler<CreateStudentCommand, StudentDto>
 {
     IApplicationDbContext _dbContext;
     IMapper _mapper;
@@ -31,7 +31,7 @@ public class CreateStudentCommandHandler : IRequestHandler<CreateSubjectCommand,
         _mapper = mapper;
     }
 
-    public async Task<StudentDto> Handle(CreateSubjectCommand request, CancellationToken cancellationToken)
+    public async Task<StudentDto> Handle(CreateStudentCommand request, CancellationToken cancellationToken)
     {
 
         FilterIfStudentExsists(request.PhoneNumber);

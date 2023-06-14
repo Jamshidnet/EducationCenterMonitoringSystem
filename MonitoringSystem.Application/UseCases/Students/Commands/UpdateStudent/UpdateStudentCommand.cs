@@ -8,7 +8,7 @@ using MonitoringSystem.Domein.Entities;
 
 namespace MonitoringSystem.Application.UseCases.Students.Commands.UpdateStudent;
 
-public class UpdateSubjectCommand : IRequest<StudentDto>
+public class UpdateStudentCommand : IRequest<StudentDto>
 {
     public Guid Id { get; set; }
     public string FirstName { get; set; }
@@ -22,7 +22,7 @@ public class UpdateSubjectCommand : IRequest<StudentDto>
     public string Email { get; set; }
 
 }
-public class UpdateStudentCommandHandler : IRequestHandler<UpdateSubjectCommand, StudentDto>
+public class UpdateStudentCommandHandler : IRequestHandler<UpdateStudentCommand, StudentDto>
 {
     IApplicationDbContext _dbContext;
     IMapper _mapper;
@@ -33,7 +33,7 @@ public class UpdateStudentCommandHandler : IRequestHandler<UpdateSubjectCommand,
         _mapper = mapper;
     }
 
-    public async Task<StudentDto> Handle(UpdateSubjectCommand request, CancellationToken cancellationToken)
+    public async Task<StudentDto> Handle(UpdateStudentCommand request, CancellationToken cancellationToken)
     {
         Student student = await FilterIfStudentExsists(request.Id);
 

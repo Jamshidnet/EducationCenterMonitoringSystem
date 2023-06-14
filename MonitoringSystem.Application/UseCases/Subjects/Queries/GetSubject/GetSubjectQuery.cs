@@ -1,58 +1,58 @@
 ﻿using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using MonitoringSystem.Application.Common.Exceptions;
+using MonitoringSystem.Application.Common.Interfaces;
+using MonitoringSystem.Application.UseCases.Grades.Models;
+using MonitoringSystem.Application.UseCases.Subjects.Models;
+using MonitoringSystem.Domein.Entities;
 
-namespace StudentPaymentSystem.Application.UseCases.Students.Queries.GetStudent;
+namespace MonitoringSystem.Application.UseCases.Subjects.Queries.GetSubject;
 
-public  record GetSubjectQuery(Guid Id) : IRequest<GetStudentsWithGrades>;
+public  record GetSubjectQuery(Guid Id) : IRequest<SubjectDto>;
 
-public class GetStudentQueryHandler : IRequestHandler<GetSubjectQuery, GetStudentsWithGrades>
+public class GetSubjectQueryHandler : IRequestHandler<GetSubjectQuery, SubjectDto>
 {
     IApplicationDbContext _dbContext;
     IMapper _mapper;
 
-    public GetStudentQueryHandler(IApplicationDbContext dbContext, IMapper mapper)
+    public GetSubjectQueryHandler(IApplicationDbContext dbContext, IMapper mapper)
     {
         _dbContext = dbContext;
         _mapper = mapper;
     }
 
 
-    public async Task<GetStudentsWithGrades> Handle(GetSubjectQuery request, CancellationToken cancellationToken)
+    public async Task<SubjectDto> Handle(GetSubjectQuery request, CancellationToken cancellationToken)
     {
-        GetStudentsWithGrades student = FilterIfStudentExsists(request.Id);
+        SubjectDto subject = FilterIfSubjectExsists(request.Id);
 
-        return _mapper.Map<GetStudentsWithGrades>(student);
+        return _mapper.Map<SubjectDto>(subject);
     }
 
-    private GetStudentsWithGrades FilterIfStudentExsists(Guid id)
+    private SubjectDto FilterIfSubjectExsists(Guid id)
     {
-        Student? student = _dbContext.Students
-            .Include(x=>x.Courses)
-            .Include(x=>x.Payments)
+        Subject? subject = _dbContext.Subjects
+            .Include(x=>x.Grades)
             .FirstOrDefault(x => x.Id == id);
 
-        CourseDto[] mappedSt = _mapper.Map<CourseDto[]>(student.Courses);
-        PaymentDto[] payments = _mapper.Map<PaymentDto[]>(student.Payments);
-        GetStudentDtoWithPayments getAllStudentDto = new()
+        GradeDto[] mappedSt = _mapper.Map<GradeDto[]>(subject.Grades);
+
+        SubjectDto getAllSubjectDto = new()
         {
-            FirstName=student.FirstName,
-            LastName=student.LastName,
-            Address=student.Address,
-            Id=student.Id,
-            Email=student.Email,
-            PhoneNumber = student.PhoneNumber,
-            Courses=mappedSt,
-            Payments=payments
+          SubjectName = subject.SubjectName,
+          TeacherId=subject.TeacherId,
+          Id= subject.Id
         };
         
 
-        if (student is null)
+        if (subject is null)
         {
-            throw new NotFoundException(" There is on student with this Id. ");
+            throw new NotFoundException(
+                " There is on subject with this Id. ");
         }
 
-        return getAllStudentDto;
+        return getAllSubjectDto;
     }
 
 

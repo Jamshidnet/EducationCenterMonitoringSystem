@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using MonitoringSystem.Application.UseCases.Subjects.Commands.UpdateSubject;
 
 namespace MonitoringSystem.Application.UseCases.Students.Commands.UpdateStudent
 {
@@ -6,7 +7,7 @@ namespace MonitoringSystem.Application.UseCases.Students.Commands.UpdateStudent
     {
         public UpdateSubjectCommandValidation() 
         {
-            RuleFor(x => x.FirstName).NotEmpty().WithMessage(" Name is required . ");
+            RuleFor(x => x.SubjectName).NotEmpty().WithMessage(" Name is required . ");
         }
 
 

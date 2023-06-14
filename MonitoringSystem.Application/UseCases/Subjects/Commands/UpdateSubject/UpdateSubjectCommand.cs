@@ -3,57 +3,49 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using MonitoringSystem.Application.Common.Exceptions;
 using MonitoringSystem.Application.Common.Interfaces;
-using MonitoringSystem.Application.UseCases.Students.Models;
+using MonitoringSystem.Application.UseCases.Subjects.Models;
 using MonitoringSystem.Domein.Entities;
 
-namespace MonitoringSystem.Application.UseCases.Students.Commands.UpdateStudent;
+namespace MonitoringSystem.Application.UseCases.Subjects.Commands.UpdateSubject;
 
-public class UpdateSubjectCommand : IRequest<StudentDto>
+public class UpdateSubjectCommand : IRequest<SubjectDto>
 {
     public Guid Id { get; set; }
-    public string FirstName { get; set; }
+    public string SubjectName { get; set; }
 
-    public string LastName { get; set; }
+    public Guid TeacherId { get; set; }
 
-    public DateTime BirthDate { get; set; }
-
-    public string PhoneNumber { get; set; }
-
-    public string Email { get; set; }
 }
-public class UpdateStudentCommandHandler : IRequestHandler<UpdateSubjectCommand, StudentDto>
+public class UpdateSubjectCommandHandler : IRequestHandler<UpdateSubjectCommand, SubjectDto>
 {
     IApplicationDbContext _dbContext;
     IMapper _mapper;
 
-    public UpdateStudentCommandHandler(IApplicationDbContext dbContext, IMapper mapper)
+    public UpdateSubjectCommandHandler(IApplicationDbContext dbContext, IMapper mapper)
     {
         _dbContext = dbContext;
         _mapper = mapper;
     }
 
-    public async Task<StudentDto> Handle(UpdateSubjectCommand request, CancellationToken cancellationToken)
+    public async Task<SubjectDto> Handle(UpdateSubjectCommand request, CancellationToken cancellationToken)
     {
-        Student student = await FilterIfStudentExsists(request.Id);
+        Subject subject = await FilterIfSubjectExsists(request.Id);
 
-        student.FirstName = request.FirstName;
-        student.LastName = request.LastName;
-        student.Email = request.Email;
-        student.PhoneNumber = request.PhoneNumber;
-        student.BirthDate = request.BirthDate;
-        _dbContext.Students.Update(student);
+        subject.SubjectName = request.SubjectName;
+        subject.TeacherId = request.TeacherId;
+        _dbContext.Subjects.Update(subject);
         await _dbContext.SaveChangesAsync(cancellationToken);
 
-        return _mapper.Map<StudentDto>(student);
+        return _mapper.Map<SubjectDto>(subject);
     }
 
-    private async Task<Student> FilterIfStudentExsists(Guid id)
+    private async Task<Subject> FilterIfSubjectExsists(Guid id)
     {
-        Student? student = await _dbContext.Students
+        Subject? subject = await _dbContext.Subjects
             .FirstOrDefaultAsync(x => x.Id == id);
 
-        return student
+        return subject
             ?? throw new NotFoundException(
-                " there is no student with this id. ");
+                " there is no subject with this id. ");
     }
 }

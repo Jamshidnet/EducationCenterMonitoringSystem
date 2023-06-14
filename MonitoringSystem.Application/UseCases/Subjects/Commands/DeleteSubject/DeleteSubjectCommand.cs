@@ -2,44 +2,45 @@
 using MediatR;
 using MonitoringSystem.Application.Common.Exceptions;
 using MonitoringSystem.Application.Common.Interfaces;
-using MonitoringSystem.Application.UseCases.Students.Models;
+using MonitoringSystem.Application.UseCases.Subjects.Models;
 using MonitoringSystem.Domein.Entities;
 
-namespace MonitoringSystem.Application.UseCases.Students.Commands.DeleteStudent;
+namespace MonitoringSystem.Application.UseCases.Subjects.Commands.DeleteSubject;
 
-public record DeleteSubjectCommand(Guid Id) : IRequest<StudentDto>;
+public record DeleteSubjectCommand(Guid Id) : IRequest<SubjectDto>;
 
-public class DeleteStudentCommandHandler : IRequestHandler<DeleteSubjectCommand, StudentDto>
+public class DeleteSubjectCommandHandler : IRequestHandler<DeleteSubjectCommand, SubjectDto>
 {
     private IApplicationDbContext _dbContext;
     private IMapper _mapper;
 
-    public DeleteStudentCommandHandler(IApplicationDbContext dbContext, IMapper mapper)
+    public DeleteSubjectCommandHandler(IApplicationDbContext dbContext, IMapper mapper)
     {
         _dbContext = dbContext;
         _mapper = mapper;
     }
 
-    public async Task<StudentDto> Handle(DeleteSubjectCommand request, CancellationToken cancellationToken)
+    public async Task<SubjectDto> Handle(DeleteSubjectCommand request, CancellationToken cancellationToken)
     {
-        Student student = FilterIfStudentExsists(request.Id);
+        Subject subject = FilterIfSubjectExsists(request.Id);
 
-        _dbContext.Students.Remove(student);
+        _dbContext.Subjects.Remove(subject);
         await _dbContext.SaveChangesAsync(cancellationToken);
 
-        return _mapper.Map<StudentDto>(student);
+        return _mapper.Map<SubjectDto>(subject);
     }
 
-    private Student FilterIfStudentExsists(Guid id)
+    private Subject FilterIfSubjectExsists(Guid id)
     {
-        Student? student = _dbContext.Students.FirstOrDefault(c => c.Id == id);
+        Subject? subject = _dbContext.Subjects.FirstOrDefault(c => c.Id == id);
 
-        if (student is null)
+        if (subject is null)
         {
-            throw new NotFoundException(" There is no student with id. ");
+            throw new NotFoundException(
+                " There is no subject with id. ");
         }
 
-        return student;
+        return subject;
     }
 }
 

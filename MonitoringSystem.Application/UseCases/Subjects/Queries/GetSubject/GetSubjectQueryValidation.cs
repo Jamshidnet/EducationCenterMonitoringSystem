@@ -1,9 +1,9 @@
 ﻿using FluentValidation;
-using StudentPaymentSystem.Application.UseCases.Students.Models;
+using MonitoringSystem.Application.UseCases.Subjects.Models;
 
 namespace StudentPaymentSystem.Application.UseCases.Students.Queries.GetStudent;
 
-public  class GetSubjectQueryValidation : AbstractValidator<GetStudentsWithGrades>
+public  class GetSubjectQueryValidation : AbstractValidator<SubjectDto>
 {
     public GetSubjectQueryValidation()
     {

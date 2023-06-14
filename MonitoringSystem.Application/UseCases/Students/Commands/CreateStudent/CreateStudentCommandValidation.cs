@@ -2,9 +2,9 @@
 
 namespace MonitoringSystem.Application.UseCases.Students.Commands.CreateStudent;
 
-public class CreateSubjectCommandValidation : AbstractValidator<CreateSubjectCommand>
+public class CreateStudentCommandValidation : AbstractValidator<CreateStudentCommand>
 {
-    public CreateSubjectCommandValidation()
+    public CreateStudentCommandValidation()
     {
         RuleFor(x => x.FirstName).NotEmpty().WithMessage(" Name is required . ");
     }

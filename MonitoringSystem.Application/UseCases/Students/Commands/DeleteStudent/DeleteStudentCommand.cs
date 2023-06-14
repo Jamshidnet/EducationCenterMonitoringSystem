@@ -7,9 +7,9 @@ using MonitoringSystem.Domein.Entities;
 
 namespace MonitoringSystem.Application.UseCases.Students.Commands.DeleteStudent;
 
-public record DeleteSubjectCommand(Guid Id) : IRequest<StudentDto>;
+public record DeleteStudentCommand(Guid Id) : IRequest<StudentDto>;
 
-public class DeleteStudentCommandHandler : IRequestHandler<DeleteSubjectCommand, StudentDto>
+public class DeleteStudentCommandHandler : IRequestHandler<DeleteStudentCommand, StudentDto>
 {
     private IApplicationDbContext _dbContext;
     private IMapper _mapper;
@@ -20,7 +20,7 @@ public class DeleteStudentCommandHandler : IRequestHandler<DeleteSubjectCommand,
         _mapper = mapper;
     }
 
-    public async Task<StudentDto> Handle(DeleteSubjectCommand request, CancellationToken cancellationToken)
+    public async Task<StudentDto> Handle(DeleteStudentCommand request, CancellationToken cancellationToken)
     {
         Student student = FilterIfStudentExsists(request.Id);
 
