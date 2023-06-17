@@ -1,23 +1,16 @@
 ﻿using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using MonitoringSystem.Application.Common.Models;
 using MonitoringSystem.Application.Common.Interfaces;
 using MonitoringSystem.Application.UseCases.Grades.Models;
 using MonitoringSystem.Domein.Entities;
-using System.Diagnostics;
-using PagedList;
 
 namespace MonitoringSystem.Application.UseCases.Grades.Queries.PaginatedQuerty;
 
-public record GetallGradeQuery
-: IRequest<PaginatedList<GradeDto>>
-{
-    public int PageNumber { get; init; } = 1;
-    public int PageSize { get; init; } = 10;
-}
+public record GetallGradeQuery: IRequest<List<GradeDto>>;
 
-public class GetallGradeCommmandHandler : IRequestHandler<GetallGradeQuery, PaginatedList<GradeDto>>
+
+public class GetallGradeCommmandHandler : IRequestHandler<GetallGradeQuery, List<GradeDto>>
 {
 
     IApplicationDbContext _dbContext;
@@ -29,17 +22,17 @@ public class GetallGradeCommmandHandler : IRequestHandler<GetallGradeQuery, Pagi
         _mapper = mapper;
     }
 
-    public async Task<PaginatedList<GradeDto>> Handle(GetallGradeQuery request, CancellationToken cancellationToken)
+    public async Task<List<GradeDto>> Handle(GetallGradeQuery request, CancellationToken cancellationToken)
     {
         Grade[] orders = await _dbContext.Grades.ToArrayAsync();
 
         List<GradeDto> dtos = _mapper.Map<GradeDto[]>(orders).ToList();
 
-        PaginatedList<GradeDto> paginatedList = 
-             PaginatedList<GradeDto>.CreateAsync(
-                dtos, request.PageNumber, request.PageSize);
+        //PaginatedList<GradeDto> paginatedList = 
+        //     PaginatedList<GradeDto>.CreateAsync(
+        //        dtos, request.PageNumber, request.PageSize);
          
-        return paginatedList;
+        return dtos;
     }
 }
  

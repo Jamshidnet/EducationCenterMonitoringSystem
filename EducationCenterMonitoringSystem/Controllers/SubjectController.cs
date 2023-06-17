@@ -1,11 +1,14 @@
 ﻿using LazyCache;
 using Microsoft.AspNetCore.Mvc;
+using MonitoringSystem.Application.UseCases.Students.Models;
+using MonitoringSystem.Application.UseCases.Students.Queries.PaginatedStudentQuery;
 using MonitoringSystem.Application.UseCases.Subjects;
 using MonitoringSystem.Application.UseCases.Subjects.Commands.CreateSubject;
 using MonitoringSystem.Application.UseCases.Subjects.Commands.DeleteSubject;
 using MonitoringSystem.Application.UseCases.Subjects.Commands.UpdateSubject;
 using MonitoringSystem.Application.UseCases.Subjects.Models;
 using MonitoringSystem.Application.UseCases.Teachers.Queries.GetAllTeachers;
+using X.PagedList;
 
 namespace EducationCenterMonitoringSystem.Controllers
 {
@@ -19,11 +22,13 @@ namespace EducationCenterMonitoringSystem.Controllers
         }
 
         [HttpGet]
-        public async ValueTask<IActionResult> GetAll(GetAllSubjectQuery query)
+        public async ValueTask<IActionResult> GetAll(int page = 1)
         {
-            ViewData["Teachers"] = (await Mediator.Send(new GetAllTeacherQuery())).Items;
-                return View(await Mediator.Send(query));
-
+            ViewData["Teachers"] = await Mediator.Send(new GetAllTeacherQuery());
+            IPagedList<SubjectDto> query = (await Mediator
+                .Send(new GetAllSubjectQuery()))
+                .ToPagedList(page, 10);
+            return View(query);
         }
 
         [HttpGet]
@@ -31,7 +36,7 @@ namespace EducationCenterMonitoringSystem.Controllers
         {
 
             var item = await Mediator.Send(new GetAllTeacherQuery());
-            ViewData["Teachers"] = item.Items;
+            ViewData["Teachers"] = item;
             return View();
         }
 
@@ -55,7 +60,7 @@ namespace EducationCenterMonitoringSystem.Controllers
         public async ValueTask<IActionResult> Update(SubjectDto subject)
         {
             var item = await Mediator.Send(new GetAllTeacherQuery());
-            ViewData["Teachers"] = item.Items;
+            ViewData["Teachers"] = item;
             return View(subject);
         }
 

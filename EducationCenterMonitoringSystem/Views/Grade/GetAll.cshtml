@@ -4,7 +4,7 @@
 @using MonitoringSystem.Application.UseCases.Subjects.Models;
 @using MonitoringSystem.Application.UseCases.Teachers.Models;
 @using MonitoringSystem.Domein.Entities;
-@model PaginatedList<GradeDto>
+@model IEnumerable<GradeDto>
 @using X.PagedList.Mvc.Core;
 @using X.PagedList;
 @{
@@ -92,7 +92,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var subject in Model.Items)
+            @foreach (var subject in Model)
             {
                 <tr>
                     <td>@Students.First(x=>x.Id==subject.StudentId).FirstName </td>
@@ -110,8 +110,8 @@
     </table>
 </div>
 
-@*<div class="container fixed-bottom d-flex align-items-center justify-content-center">
-    @Html.PagedListPager((IPagedList)Model,page => Url.Action("GetAll", "Grade",new{pageNumber= page}),
+<div class="container fixed-bottom d-flex align-items-center justify-content-center">
+    @Html.PagedListPager((IPagedList)Model,page => Url.Action("GetAll", "Grade",new{ page= page}),
     new X.PagedList.Web.Common.PagedListRenderOptions
     {
     DisplayItemSliceAndTotal = false,
@@ -119,8 +119,7 @@
     LiElementClasses = new[] { "page-item" },
     PageClasses = new[] { "page-link" },
     })
-
-</div>*@
+</div>
 <p>
     <a href="@Url.Action("Create")" class="btn btn-primary">Create Mark</a>
 </p>

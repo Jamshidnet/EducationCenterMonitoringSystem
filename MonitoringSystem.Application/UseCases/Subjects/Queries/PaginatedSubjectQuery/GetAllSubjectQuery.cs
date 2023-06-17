@@ -8,9 +8,9 @@ using MonitoringSystem.Domein.Entities;
 
 namespace MonitoringSystem.Application.UseCases.Subjects;
 
-public record GetAllSubjectQuery(int PageNumber = 1, int PageSize = 10) : IRequest<PaginatedList<SubjectDto>>;
+public record GetAllSubjectQuery : IRequest<List<SubjectDto>>;
 
-public class GetallSubjectCommmandHandler : IRequestHandler<GetAllSubjectQuery, PaginatedList<SubjectDto>>
+public class GetallSubjectCommmandHandler : IRequestHandler<GetAllSubjectQuery, List<SubjectDto>>
 {
 
     IApplicationDbContext _dbContext;
@@ -22,16 +22,12 @@ public class GetallSubjectCommmandHandler : IRequestHandler<GetAllSubjectQuery, 
         _mapper = mapper;
     }
 
-    public async Task<PaginatedList<SubjectDto>> Handle(GetAllSubjectQuery request, CancellationToken cancellationToken)
+    public async Task<List<SubjectDto>> Handle(GetAllSubjectQuery request, CancellationToken cancellationToken)
     {
         Subject[] orders = await _dbContext.Subjects.Include(x => x.Grades).ToArrayAsync();
 
         List<SubjectDto> dtos = _mapper.Map<SubjectDto[]>(orders).ToList();
 
-        PaginatedList<SubjectDto> paginatedList =
-             PaginatedList<SubjectDto>.CreateAsync(
-                dtos, request.PageNumber, request.PageSize);
-
-        return paginatedList;
+        return dtos;
     }
 }

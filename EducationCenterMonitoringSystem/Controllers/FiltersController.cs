@@ -30,14 +30,14 @@ namespace EducationCenterMonitoringSystem.Controllers
         [HttpGet]
         public async Task<IActionResult> BestSubject()
         {
-            ViewData["Teachers"] = (await Mediator.Send(new GetAllTeacherQuery())).Items;
+            ViewData["Teachers"] = await Mediator.Send(new GetAllTeacherQuery());
             return View();
         }
 
         [HttpPost]
         public async Task<IActionResult> BestSubjects(BestSubjectQuery students)
         {
-            ViewData["Teachers"] = (await Mediator.Send(new GetAllTeacherQuery())).Items;
+            ViewData["Teachers"] = await Mediator.Send(new GetAllTeacherQuery());
             return View(await Mediator.Send(students));
         }
 

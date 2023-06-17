@@ -1,7 +1,8 @@
 ﻿@using MonitoringSystem.Application.Common.Models;
 @using MonitoringSystem.Application.UseCases.Students.Models;
-@model PaginatedList<StudentDto>
-
+@model IEnumerable<StudentDto>
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
 @{
     ViewData["Title"] = "All Students";
     Layout = "~/Views/Shared/_Layout.cshtml"; // Optionally, specify a layout
@@ -129,7 +130,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var student in Model.Items)
+            @foreach (var student in Model)
             {
                 <tr>
                     <td>@student.FirstName</td>
@@ -145,6 +146,19 @@
         </tbody>
     </table>
 </div>
+
+
+<div class="container fixed-bottom d-flex align-items-center justify-content-center">
+    @Html.PagedListPager((IPagedList)Model,page => Url.Action("GetAll", "Student",new{ page= page}),
+    new X.PagedList.Web.Common.PagedListRenderOptions
+    {
+    DisplayItemSliceAndTotal = false,
+    ContainerDivClasses = new[] { "navigation" },
+    LiElementClasses = new[] { "page-item" },
+    PageClasses = new[] { "page-link" },
+    })
+</div>
+
 <p>
     <a href="@Url.Action("Create")" class="btn btn-primary">Create Student</a>
 </p>

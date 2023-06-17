@@ -10,13 +10,10 @@ namespace MonitoringSystem.Application.UseCases.Teachers.Queries.GetAllTeachers;
 
 
 public record GetAllTeacherQuery
-: IRequest<PaginatedList<TeacherDto>>
-{
-    public int PageNumber { get; init; } = 1;
-    public int PageSize { get; init; } = 10;
-}
+: IRequest<List<TeacherDto>>;
 
-public class GetallTeacherQueryHandler : IRequestHandler<GetAllTeacherQuery, PaginatedList<TeacherDto>>
+
+public class GetallTeacherQueryHandler : IRequestHandler<GetAllTeacherQuery, List<TeacherDto>>
 {
 
     IApplicationDbContext _dbContext;
@@ -28,16 +25,12 @@ public class GetallTeacherQueryHandler : IRequestHandler<GetAllTeacherQuery, Pag
         _mapper = mapper;
     }
 
-    public async Task<PaginatedList<TeacherDto>> Handle(GetAllTeacherQuery request, CancellationToken cancellationToken)
+    public async Task<List<TeacherDto>> Handle(GetAllTeacherQuery request, CancellationToken cancellationToken)
     {
         Teacher[] orders = await _dbContext.Teachers.ToArrayAsync();
 
         List<TeacherDto> dtos = _mapper.Map<TeacherDto[]>(orders).ToList();
 
-        PaginatedList<TeacherDto> paginatedList =
-             PaginatedList<TeacherDto>.CreateAsync(
-                dtos, request.PageNumber, request.PageSize);
-
-        return paginatedList;
+        return dtos;
     }
 }

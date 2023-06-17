@@ -6,8 +6,8 @@ using MonitoringSystem.Application.UseCases.Students.Commands.UpdateStudent;
 using MonitoringSystem.Application.UseCases.Students.Models;
 using MonitoringSystem.Application.UseCases.Students.Queries.PaginatedStudentQuery;
 using MonitoringSystem.Application.UseCases.Students.Queries.GetStudent;
-using MonitoringSystem.Application.UseCases.Teachers.Queries.GetAllTeachers;
 using MonitoringSystem.Application.UseCases.Subjects;
+using X.PagedList;
 
 namespace EducationCenterMonitoringSystem.Controllers;
 
@@ -20,16 +20,18 @@ public class StudentController : ApiBaseController
     }
 
     [HttpGet]
-    public async ValueTask<IActionResult> GetAll(GetAllStudentQuery query)
+    public async ValueTask<IActionResult> GetAll(int page = 1)
     {
-            return View(await Mediator.Send(query));
+        IPagedList<StudentDto> query = (await Mediator
+            .Send(new GetAllStudentQuery()))
+            .ToPagedList(page, 10);
+        return View(query);
     }
-
 
     [HttpGet]
     public async ValueTask<IActionResult> Details(GetStudentQuery student)
     {
-        ViewData["Subjects"]= (await Mediator.Send(new GetAllSubjectQuery())).Items;
+        ViewData["Subjects"]= await Mediator.Send(new GetAllSubjectQuery());
         return View(await Mediator.Send(student));
     }
      

@@ -8,6 +8,7 @@ using MonitoringSystem.Application.UseCases.Grades.Models;
 using MonitoringSystem.Application.UseCases.Grades.Queries.PaginatedQuerty;
 using MonitoringSystem.Application.UseCases.Subjects;
 using MonitoringSystem.Application.UseCases.Students.Queries.PaginatedStudentQuery;
+using X.PagedList;
 
 namespace EducationCenterMonitoringSystem.Controllers
 {
@@ -21,23 +22,28 @@ namespace EducationCenterMonitoringSystem.Controllers
         }
 
         [HttpGet]
-        public async ValueTask<IActionResult> GetAll(GetallGradeQuery query)
+        public async ValueTask<IActionResult> GetAll(int page=1)
         {
-            ViewData["Subjects"] = (await Mediator
-                .Send(new GetAllSubjectQuery())).Items;
-            ViewData["Students"] = (await Mediator
-                .Send(new GetAllStudentQuery())).Items;
-                return View(await Mediator.Send(query));
+            ViewData["Subjects"] = await Mediator
+                .Send(new GetAllSubjectQuery());
+            ViewData["Students"] = await Mediator
+                .Send(new GetAllStudentQuery());
 
+            IPagedList<GradeDto> query = (await Mediator
+                .Send(new GetallGradeQuery()))
+                .ToPagedList(page, 10);
+            return View(query);
         }
+
+
 
         [HttpGet]
         public async ValueTask<IActionResult> Create()
         {
-            ViewData["Subjects"] = (await Mediator
-                .Send(new GetAllSubjectQuery())).Items;
-            ViewData["Students"] = (await Mediator
-                .Send(new GetAllStudentQuery())).Items;
+            ViewData["Subjects"] = await Mediator
+                .Send(new GetAllSubjectQuery());
+            ViewData["Students"] = await Mediator
+                .Send(new GetAllStudentQuery());
             return View();
         }
 
@@ -61,10 +67,10 @@ namespace EducationCenterMonitoringSystem.Controllers
         public async ValueTask<IActionResult> Update(GradeDto grade)
         {
 
-            ViewData["Subjects"] = (await Mediator.
-                Send(new GetAllSubjectQuery())).Items;
-            ViewData["Students"] = (await Mediator
-                .Send(new GetAllStudentQuery())).Items;
+            ViewData["Subjects"] = await Mediator.
+                Send(new GetAllSubjectQuery());
+            ViewData["Students"] = await Mediator
+                .Send(new GetAllStudentQuery());
             return View(grade);
         }
 
