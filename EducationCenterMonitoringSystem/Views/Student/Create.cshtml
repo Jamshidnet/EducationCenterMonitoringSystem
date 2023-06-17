@@ -71,7 +71,7 @@
 
     <div class="form-group">
         <label asp-for="PhoneNumber">Phone Number:</label>
-        <input asp-for="PhoneNumber" class="form-control" required />
+        <input asp-for="PhoneNumber" class="form-control" pattern="\+998.*" required />
         <span asp-validation-for="PhoneNumber" class="text-danger"></span>
     </div>
 
@@ -83,7 +83,20 @@
 
     <button type="submit" class="btn btn-primary">Create</button>
 </form>
+<script>
+    const phoneNumberInput = document.getElementById('phoneNumberInput');
 
+    phoneNumberInput.addEventListener('input', function (event) {
+        const phoneNumber = event.target.value;
+        const pattern = /^\+998/; // Regular expression to match the desired format
+
+        if (!pattern.test(phoneNumber)) {
+            phoneNumberInput.setCustomValidity('Phone number should begin with +998');
+        } else {
+            phoneNumberInput.setCustomValidity('');
+        }
+    });
+</script>
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }

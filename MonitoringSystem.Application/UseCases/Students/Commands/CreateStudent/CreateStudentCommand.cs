@@ -1,9 +1,13 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using MonitoringSystem.Application.Common.Exceptions;
 using MonitoringSystem.Application.Common.Interfaces;
 using MonitoringSystem.Application.UseCases.Students.Models;
 using MonitoringSystem.Domein.Entities;
+using System.ComponentModel.DataAnnotations;
+using System.Text.RegularExpressions;
 
 namespace MonitoringSystem.Application.UseCases.Students.Commands.CreateStudent;
 
@@ -15,8 +19,16 @@ public class CreateStudentCommand : IRequest<StudentDto>
 
     public DateTime BirthDate { get; set; }
 
-    public string PhoneNumber { get; set; }
-
+    private string _phoneNumber;
+    public string PhoneNumber
+    {
+        get => _phoneNumber; set
+        {
+            if(Regex.IsMatch(value,@"^\+998(33|91|90|99|94|97|95)"))
+                _phoneNumber = value;
+        }
+    }
+    [EmailAddress]
     public string Email { get; set; }
 
 }

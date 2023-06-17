@@ -4,6 +4,8 @@ using MonitoringSystem.Application.Common.Exceptions;
 using MonitoringSystem.Application.Common.Interfaces;
 using MonitoringSystem.Application.UseCases.Teachers.Models;
 using MonitoringSystem.Domein.Entities;
+using System.ComponentModel.DataAnnotations;
+using System.Text.RegularExpressions;
 
 namespace MonitoringSystem.Application.UseCases.Teachers.Commands.CreateTeacher;
 
@@ -15,8 +17,18 @@ public  class CreateTeacherCommand  : IRequest<TeacherDto>
 
     public DateTime BirthDate { get; set; }
 
-    public string PhoneNumber { get; set; }
+    private string _phoneNumber;
 
+    public string PhoneNumber
+    {
+        get => _phoneNumber; set
+        {
+            if (Regex.IsMatch(value, @"^\+998(33|91|90|99|94|97|95)"))
+                _phoneNumber = value;
+            else throw new Exception(" PhoneNUmber is not matched. ");
+        }
+    }
+    [EmailAddress]
     public string Email { get; set; }
 
 }
