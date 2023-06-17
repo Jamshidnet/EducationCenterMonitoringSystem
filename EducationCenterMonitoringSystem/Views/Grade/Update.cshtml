@@ -1,0 +1,50 @@
+﻿@using MonitoringSystem.Application.UseCases.Grades.Commands.UpdateGrade;
+@using MonitoringSystem.Application.UseCases.Grades.Models;
+@using MonitoringSystem.Application.UseCases.Students.Models;
+@using MonitoringSystem.Application.UseCases.Subjects.Models;
+@using MonitoringSystem.Application.UseCases.Teachers.Models;
+@using MonitoringSystem.Domein.Entities;
+@model GradeDto
+
+@{
+    ViewData["Title"] = "Update Subject";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+
+    List<SubjectDto>? Subjects = ViewData["Subjects"] as List<SubjectDto>;
+    List<StudentDto>? Students = ViewData["Students"] as List<StudentDto>;
+}
+
+<h3>Update Marks</h3>
+<div class="form-container">
+    <form asp-action="Update" method="post">
+        <input type="hidden" asp-for="Id" />
+
+        <div class="col-md-4">
+            <label for="StudentId">Student:</label>
+            <select class="form-control" id="StudentId" name="StudentId" disabled>
+                <option value="@Model.StudentId">
+                @Students.First(x=>x.Id==@Model.StudentId)?.FirstName
+                    @Students.First(x=>x.Id==@Model.StudentId)?.LastName
+                </option>
+            </select>
+        </div>
+
+        <div class="col-md-4">
+            <label for="SubjectId">Subject:</label>
+            <select class="form-control" id="SubjectId" name="SubjectId" disabled>
+                <option value="@Model.SubjectId">
+                    @Subjects.First(x=>x.Id==@Model.SubjectId)?.SubjectName
+                </option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="GradeNum">Mark:</label>
+            <input asp-for="GradeNum" class="form-control" required />
+            <span asp-validation-for="GradeNum" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+</div>

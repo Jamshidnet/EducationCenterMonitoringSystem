@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MonitoringSystem.Application.Common.Interfaces;
@@ -16,6 +17,7 @@ public static class ConfigureServices
         {
             options.UseNpgsql(connectionString: configuration.GetConnectionString("DbConnection"));
         });
+      // services.AddDefaultIdentity<IdentityUser>
 
         services.AddScoped<AuditableEntitySaveChangesInterceptor>();
         

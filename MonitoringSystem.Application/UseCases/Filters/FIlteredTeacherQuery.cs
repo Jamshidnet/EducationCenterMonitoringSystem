@@ -6,17 +6,17 @@ using MonitoringSystem.Application.Common.Interfaces;
 using MonitoringSystem.Application.Common.Models;
 using MonitoringSystem.Domein.Entities;
 
-namespace MonitoringSystem.Application.UseCases.Teachers.Queries.GetAllTeachers;
+namespace MonitoringSystem.Application.UseCases.Filters;
 
 
-public record GetAllTeacherQuery
+public record FilteredTeacherQuery
 : IRequest<PaginatedList<TeacherDto>>
 {
     public int PageNumber { get; init; } = 1;
     public int PageSize { get; init; } = 10;
 }
 
-public class GetallTeacherQueryHandler : IRequestHandler<GetAllTeacherQuery, PaginatedList<TeacherDto>>
+public class GetallTeacherQueryHandler : IRequestHandler<FilteredTeacherQuery, PaginatedList<TeacherDto>>
 {
 
     IApplicationDbContext _dbContext;
@@ -28,11 +28,19 @@ public class GetallTeacherQueryHandler : IRequestHandler<GetAllTeacherQuery, Pag
         _mapper = mapper;
     }
 
-    public async Task<PaginatedList<TeacherDto>> Handle(GetAllTeacherQuery request, CancellationToken cancellationToken)
+    public async Task<PaginatedList<TeacherDto>> Handle(FilteredTeacherQuery request, CancellationToken cancellationToken)
     {
-        Teacher[] orders = await _dbContext.Teachers.ToArrayAsync();
+        var teachers = from mark in _dbContext.Grades
+                       join subject in _dbContext.Subjects
+                       on mark.SubjectId equals subject.Id
+                       join teacher in _dbContext.Teachers
+                       on subject.TeacherId equals teacher.Id
+                       where mark.GradeNum > 97
+                       select teacher;
 
-        List<TeacherDto> dtos = _mapper.Map<TeacherDto[]>(orders).ToList();
+       var ListTeachers = teachers.Distinct().ToList();
+
+        List < TeacherDto > dtos = _mapper.Map<TeacherDto[]>(ListTeachers).ToList();
 
         PaginatedList<TeacherDto> paginatedList =
              PaginatedList<TeacherDto>.CreateAsync(

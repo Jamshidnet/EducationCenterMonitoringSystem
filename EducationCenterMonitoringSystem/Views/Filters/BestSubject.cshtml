@@ -1,0 +1,91 @@
+﻿@using MonitoringSystem.Application.UseCases.Filters;
+@using MonitoringSystem.Application.UseCases.Grades.Commands.CreateGrade;
+@using MonitoringSystem.Application.UseCases.Students.Models;
+@using MonitoringSystem.Application.UseCases.Subjects.Models;
+@using MonitoringSystem.Application.UseCases.Teachers.Commands.CreateTeacher;
+@using MonitoringSystem.Application.UseCases.Teachers.Models;
+@model BestSubjectQuery
+@{
+    ViewData["Title"] = "Create Teacher";
+    //Layout = "~/Views/Shared/_Layout.cshtml"; // Optionally, specify a layout
+
+    List<TeacherDto>? Teachers = ViewData["Teachers"] as List<TeacherDto>;
+}
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f5f5f5;
+    }
+
+    h3 {
+        text-align: center;
+        margin-top: 20px;
+    }
+    h5 {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    label {
+        display: block;
+        font-weight: bold;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 6px 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    .text-danger {
+        color: #dc3545;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        color: #fff;
+        padding: 8px 16px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+</style>
+
+<h3>Filter Subjects</h3>
+
+<form asp-action="BestSubjects" method="post">
+    <div class="col-md-4">
+        <label for="TeacherId">Teacher:</label>
+        <select class="form-control" id="TeacherId" name="TeacherId" required>
+            <option value="">Choose Teacher</option>
+            @foreach (var teacher in Teachers)
+            {
+                <option value="@teacher.Id">@teacher.FirstName @teacher.LastName</option>
+            }
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="MinMark">Minimum Desired Mark:</label>
+        <input asp-for="MinMark" class="form-control" required />
+        <span asp-validation-for="MinMark" class="number"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="TakeNum">Minimum number of students:</label>
+        <input asp-for="TakeNum" class="form-control" required />
+        <span asp-validation-for="TakeNum" class="number"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Search</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,39 @@
+﻿@using MonitoringSystem.Application.UseCases.Subjects.Models;
+@using MonitoringSystem.Application.UseCases.Teachers.Models;
+@using MonitoringSystem.Domein.Entities;
+@model SubjectDto
+
+@{
+    ViewData["Title"] = "Update Subject";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    List<TeacherDto>? Teachers = ViewData["Teachers"] as List<TeacherDto>;
+
+}
+
+<h3>Update Subject</h3>
+
+<div class="form-container">
+    <form asp-action="Update" method="post">
+        <input type="hidden" asp-for="Id" />
+
+        <div class="form-group">
+            <label asp-for="SubjectName">Subject Name:</label>
+            <input asp-for="SubjectName" class="form-control" required />
+            <span asp-validation-for="SubjectName" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-4">
+            <label for="TeacherId">Teacher:</label>
+            <select class="form-control" id="TeacherId" name="TeacherId" required>
+                <option value="">Choose Teacher</option>
+                @foreach (var teacher in Teachers)
+                {
+                    <option value="@teacher.Id">@teacher.FirstName @teacher.LastName</option>
+                }
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+</div>

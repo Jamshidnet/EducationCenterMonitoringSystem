@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using MonitoringSystem.Application.Common.Interfaces;
 using MonitoringSystem.Domein.Entities;
 using MonitoringSystem.Infrustructure.Persistence.Interceptors;
@@ -6,7 +8,7 @@ using System.Reflection;
 
 namespace MonitoringSystem.Infrustructure.Persistence
 {
-    public class ApplicationDbContext : DbContext, IApplicationDbContext
+    public class ApplicationDbContext :  IdentityDbContext, IApplicationDbContext
     {
 
         public DbSet<Student> Students { get; set; }

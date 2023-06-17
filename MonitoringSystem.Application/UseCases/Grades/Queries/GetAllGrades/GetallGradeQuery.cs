@@ -5,6 +5,8 @@ using MonitoringSystem.Application.Common.Models;
 using MonitoringSystem.Application.Common.Interfaces;
 using MonitoringSystem.Application.UseCases.Grades.Models;
 using MonitoringSystem.Domein.Entities;
+using System.Diagnostics;
+using PagedList;
 
 namespace MonitoringSystem.Application.UseCases.Grades.Queries.PaginatedQuerty;
 
@@ -33,7 +35,7 @@ public class GetallGradeCommmandHandler : IRequestHandler<GetallGradeQuery, Pagi
 
         List<GradeDto> dtos = _mapper.Map<GradeDto[]>(orders).ToList();
 
-        PaginatedList<GradeDto> paginatedList =
+        PaginatedList<GradeDto> paginatedList = 
              PaginatedList<GradeDto>.CreateAsync(
                 dtos, request.PageNumber, request.PageSize);
          

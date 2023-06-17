@@ -3,7 +3,7 @@ using MonitoringSystem.Application.UseCases.Subjects.Commands.CreateSubject;
 
 namespace MonitoringSystem.Application.UseCases.Students.Commands.CreateStudent;
 
-public class CreateSubjectCommandValidation : AbstractValidator<CreateSubjectCommand>
+public class CreateSubjectCommandValidation : AbstractValidator<CreateSubjectCommmand>
 {
     public CreateSubjectCommandValidation()
     {

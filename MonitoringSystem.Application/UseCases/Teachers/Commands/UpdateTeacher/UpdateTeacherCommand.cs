@@ -21,7 +21,6 @@ public  class UpdateTeacherCommand : IRequest<TeacherWithSubjectsDto>
 
     public string Email { get; set; }
 
-    public List<Guid> Subjects { get; set; }
 }
 
 public class UpdateTeacherCommandHandler : IRequestHandler<UpdateTeacherCommand, TeacherWithSubjectsDto>
@@ -40,14 +39,12 @@ public class UpdateTeacherCommandHandler : IRequestHandler<UpdateTeacherCommand,
 
        Teacher teacher=  FilterIfTeacherExsists(request.Id);
 
-        IEnumerable<Subject> subjects = FilterifSubjectsIdsAreAvialible(request.Subjects);
 
         teacher.FirstName = request.FirstName;
         teacher.PhoneNumber = request.PhoneNumber;
         teacher.LastName = request.LastName;
         teacher.BirthDate=request.BirthDate;
         teacher.Email = request.Email;
-        teacher.Subjects = subjects.ToList();
 
          _dbContext.Teachers.Update(teacher);
         await _dbContext.SaveChangesAsync(cancellationToken);
@@ -55,19 +52,11 @@ public class UpdateTeacherCommandHandler : IRequestHandler<UpdateTeacherCommand,
         return _mapper.Map<TeacherWithSubjectsDto>(teacher);
     }
 
-    private IEnumerable<Subject> FilterifSubjectsIdsAreAvialible(ICollection<Guid> studentIds)
-    {
-        foreach (var Id in studentIds)
-            yield return _dbContext.Subjects.Find(Id)
-                ?? throw new NotFoundException(
-                    $" there is no course with this {Id} id. ");
-    }
-
     private Teacher FilterIfTeacherExsists(Guid Id)
     {
         Teacher? teacher = _dbContext.Teachers.
-            Include(x=>x.Subjects).
-            FirstOrDefault(x => x.Id==Id);
+            Include(x=>x.Subjects)
+            .FirstOrDefault(x => x.Id==Id);
 
         if (teacher is null)
         {

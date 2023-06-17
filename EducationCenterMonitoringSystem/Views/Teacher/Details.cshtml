@@ -1,0 +1,53 @@
+﻿@using MonitoringSystem.Application.UseCases.Teachers.Models;
+@model TeacherWithSubjectsDto
+
+@{
+    ViewData["Title"] = "Teacher Details";
+   // Layout = "~/Views/Shared/_Layout.cshtml"; // Optionally, specify a layout
+}
+
+<h1>Teacher Details</h1>
+
+<div>
+    <h4>Teacher Information</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">First Name</dt>
+        <dd class="col-sm-10">@Model.FirstName</dd>
+
+        <dt class="col-sm-2">Last Name</dt>
+        <dd class="col-sm-10">@Model.LastName</dd>
+
+        <dt class="col-sm-2">Birth Date</dt>
+        <dd class="col-sm-10">@Model.BirthDate.ToShortDateString()</dd>
+
+        <dt class="col-sm-2">Phone Number</dt>
+        <dd class="col-sm-10">@Model.PhoneNumber</dd>
+
+        <dt class="col-sm-2">Email</dt>
+        <dd class="col-sm-10">@Model.Email</dd>
+
+        <dt class="col-sm-2">Subjects</dt>
+        <dd class="col-sm-10">
+            @if (Model.Subjects != null && Model.Subjects.Any())
+            {
+                <ul>
+                    @foreach (var subject in Model.Subjects)
+                    {
+                        <li>@subject.SubjectName</li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p>No subjects assigned.</p>
+            }
+        </dd>
+    </dl>
+
+</div>
+
+<div>
+    <a asp-controller="Teacher" asp-action="GetAll">Back to List</a>
+</div>
+

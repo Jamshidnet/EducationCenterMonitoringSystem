@@ -36,23 +36,25 @@ public class GetStudentQueryHandler : IRequestHandler<GetStudentQuery, GetStuden
             .Include(x=>x.Grades)
             .FirstOrDefault(x => x.Id == id);
 
+
         GradeDto[] mappedSt = _mapper.Map<GradeDto[]>(student?.Grades);
         GetStudentsWithGrades getAllStudentDto = new()
         {
-            FirstName=student?.FirstName,
-            LastName=student?.LastName,
-            Id=student.Id,
-            Email=student.Email,
+            FirstName = student?.FirstName,
+            LastName = student?.LastName,
+            Id = student.Id,
+            Email = student.Email,
             PhoneNumber = student.PhoneNumber,
-            BirthDate=student.BirthDate,
-            StudentRageNumber=student.StudentRageNumber,
-            Grades=mappedSt
+            BirthDate = student.BirthDate,
+            StudentRageNumber = student.StudentRageNumber,
+            Grades = mappedSt
         };
         
 
         if (student is null)
         {
-            throw new NotFoundException(" There is on student with this Id. ");
+            throw new NotFoundException(
+                " There is on student with this Id. ");
         }
 
         return getAllStudentDto;

@@ -1,0 +1,94 @@
+﻿@using MonitoringSystem.Application.UseCases.Grades.Commands.CreateGrade;
+@using MonitoringSystem.Application.UseCases.Students.Models;
+@using MonitoringSystem.Application.UseCases.Subjects.Models;
+@using MonitoringSystem.Application.UseCases.Teachers.Commands.CreateTeacher;
+@using MonitoringSystem.Application.UseCases.Teachers.Models;
+@model CreateGradeCommand
+
+@{
+    ViewData["Title"] = "Create Teacher";
+    Layout = "~/Views/Shared/_Layout.cshtml"; // Optionally, specify a layout
+
+    List<SubjectDto>? Subjects = ViewData["Subjects"] as List<SubjectDto>;
+    List<StudentDto>? Students = ViewData["Students"] as List<StudentDto>;
+}
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f5f5f5;
+    }
+
+    h3 {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    label {
+        display: block;
+        font-weight: bold;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 6px 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    .text-danger {
+        color: #dc3545;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        color: #fff;
+        padding: 8px 16px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+</style>
+
+<h3>Create Marks</h3>
+
+<form asp-action="Create" method="post">
+    <div class="col-md-4">
+        <label for="StudentId">Student:</label>
+        <select class="form-control" id="StudentId" name="StudentId" required>
+            <option value="">Choose Student</option>
+            @foreach (var teacher in Students)
+            {
+                <option value="@teacher.Id">@teacher.FirstName @teacher.LastName</option>
+            }
+        </select>
+    </div>
+    <div class="col-md-4">
+        <label for="SubjectId">Subject:</label>
+        <select class="form-control" id="SubjectId" name="SubjectId" required>
+            <option value="">Choose Subject</option>
+            @foreach (var teacher in Subjects)
+            {
+                <option value="@teacher.Id">@teacher.SubjectName</option>
+            }
+        </select>
+    </div>
+
+
+    <div class="form-group">
+        <label asp-for="GradeNum">Grade:</label>
+        <input asp-for="GradeNum" class="form-control" required />
+        <span asp-validation-for="GradeNum" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

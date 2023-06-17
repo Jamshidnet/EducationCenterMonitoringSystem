@@ -33,8 +33,6 @@ public class UpdateGradeCommandHandler : IRequestHandler<UpdateGradeCommand, Gra
     {
         Grade srade = await FilterIfGradeExsists(request.Id);
 
-        srade.StudentId = request.StudentId;
-        srade.SubjectId = request.SubjectId;
         srade.GradeNum = request.GradeNum;
         _dbContext.Grades.Update(srade);
         await _dbContext.SaveChangesAsync(cancellationToken);

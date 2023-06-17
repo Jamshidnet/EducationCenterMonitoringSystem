@@ -1,0 +1,111 @@
+﻿@using MonitoringSystem.Application.Common.Models;
+@using MonitoringSystem.Application.UseCases.Subjects.Models;
+@using MonitoringSystem.Application.UseCases.Teachers.Models;
+@using MonitoringSystem.Domein.Entities;
+@model PaginatedList<SubjectDto>
+
+@{
+    ViewData["Title"] = "All Subjects";
+    //Layout = "~/Views/Shared/_Layout.cshtml"; // Optionally, specify a layout
+    List<TeacherDto>? Teachers = ViewData["Teachers"] as List<TeacherDto>;
+    string FullName = Teachers.First(x => x.Id == @Model.Items.First().TeacherId).FirstName + "  "+
+    Teachers.First(x => x.Id == Model.Items.First().TeacherId).LastName;
+}
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f5f5f5;
+    }
+
+    h3 {
+        text-align: center;
+        margin-top: 20px;
+    } 
+    
+    h5 {
+        text-align: left;
+        margin-top: 20px;
+    }
+
+    p {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .table-container {
+        width: 80%;
+        margin: 20px auto;
+        overflow-x: auto;
+    }
+
+    .table {
+        width: fit-content;
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 10px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #007bff;
+        color: black;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    tr:hover {
+        background-color: #e0e0e0;
+    }
+
+    .action-links {
+        display: flex;
+    }
+
+        .action-links a {
+            margin-right: 10px;
+            padding: 6px 12px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+</style>
+
+<h3>Subjects</h3>
+<h5>This is the list of subjects whose teacher is @FullName. 
+    This list is filtered for the number of students whose score are higher than specified mark. </h5>
+
+
+<div class="table-container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th style="width: 40%;">Subject Name</th>
+                <th style="width: 20%;">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var subject in Model.Items)
+            {
+                @if (subject is not null)
+                {
+                 <tr>
+                        <td>@subject.SubjectName</td>
+                    <td class="action-links">
+                        <a href="@Url.Action("Detail" , "Subject" , new { id = subject.Id })">Details</a>
+                    </td>
+                </tr>
+                }
+            }
+
+        </tbody>
+    </table>
+</div>
+

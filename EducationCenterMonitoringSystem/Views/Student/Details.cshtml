@@ -1,0 +1,49 @@
+﻿@using MonitoringSystem.Application.UseCases.Grades.Models;
+@using MonitoringSystem.Application.UseCases.Students.Models;
+@using MonitoringSystem.Application.UseCases.Subjects.Models;
+@model GetStudentsWithGrades
+
+@{
+    ViewData["Title"] = "Student Details";
+    // Layout = "~/Views/Shared/_Layout.cshtml"; // Optionally, specify a layout
+    List<SubjectDto>? subjects = ViewData["Subjects"] as List<SubjectDto>;
+}
+
+<h3>Student Details</h3>
+<div>
+    <h5>Student Information</h5>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">First Name</dt>
+        <dd class="col-sm-10">@Model.FirstName</dd>
+
+        <dt class="col-sm-2">Last Name</dt>
+        <dd class="col-sm-10">@Model.LastName</dd>
+
+        <dt class="col-sm-2">Birth Date</dt>
+        <dd class="col-sm-10">@Model.BirthDate.ToShortDateString()</dd>
+
+        <dt class="col-sm-2">Phone Number</dt>
+        <dd class="col-sm-10">@Model.PhoneNumber</dd>
+
+        <dt class="col-sm-2">Email</dt>
+        <dd class="col-sm-10">@Model.Email</dd> 
+        
+        <dt class="col-sm-2">Highest marked subject</dt>
+        @if (Model.Grades?.Count() == 0)
+        {
+            <dd class="col-sm-10">@Model.FirstName has no mark yet. </dd>
+
+        }
+        else
+        {
+            <dd class="col-sm-10"> @subjects.First(x => x.Id == @Model.Grades.MaxBy(x => x.GradeNum).SubjectId).SubjectName </dd>
+        }
+
+    </dl>
+</div>
+
+<div>
+    <a asp-controller="Student" asp-action="GetAll">Back to List</a>
+</div>
+

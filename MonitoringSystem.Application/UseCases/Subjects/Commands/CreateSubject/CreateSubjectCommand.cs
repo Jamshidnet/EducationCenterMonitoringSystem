@@ -7,14 +7,14 @@ using MonitoringSystem.Domein.Entities;
 
 namespace MonitoringSystem.Application.UseCases.Subjects.Commands.CreateSubject;
 
-public class CreateSubjectCommand : IRequest<SubjectDto>
+public class CreateSubjectCommmand : IRequest<SubjectDto>
 {
     public string SubjectName { get; set; }
 
     public Guid TeacherId { get; set; }
 
 }
-public class CreateSubjectCommandHandler : IRequestHandler<CreateSubjectCommand, SubjectDto>
+public class CreateSubjectCommandHandler : IRequestHandler<CreateSubjectCommmand, SubjectDto>
 {
     IApplicationDbContext _dbContext;
     IMapper _mapper;
@@ -25,7 +25,7 @@ public class CreateSubjectCommandHandler : IRequestHandler<CreateSubjectCommand,
         _mapper = mapper;
     }
 
-    public async Task<SubjectDto> Handle(CreateSubjectCommand request, CancellationToken cancellationToken)
+    public async Task<SubjectDto> Handle(CreateSubjectCommmand request, CancellationToken cancellationToken)
     {
 
         FilterIfSubjectExsists(request.SubjectName);
