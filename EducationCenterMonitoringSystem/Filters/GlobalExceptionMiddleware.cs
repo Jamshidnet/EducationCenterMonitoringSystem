@@ -30,20 +30,9 @@ namespace EducationCenterMonitoringSystem.Filters
                 await _next(httpContext) ;
 
             }
-            catch (AlreadyExistsException e)
-            {
-                 HandleException(httpContext,e.Message);
-
-                
-            }
-            catch(NotFoundException e)
-            {
-
-            }
             catch(Exception e)
             {
-
-
+                 HandleException(httpContext,e.Message);
             }
 
         }
