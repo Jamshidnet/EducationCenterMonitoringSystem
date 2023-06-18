@@ -52,7 +52,7 @@ public class CreateGradeCommandHandler : IRequestHandler<CreateGradeCommand, Gra
 
         if (student is not null)
         {
-            throw new AlreadyExsistsException(
+            throw new AlreadyExistsException(
                 " This student has alreadt taken grate for that subject.  ");
         }
     }

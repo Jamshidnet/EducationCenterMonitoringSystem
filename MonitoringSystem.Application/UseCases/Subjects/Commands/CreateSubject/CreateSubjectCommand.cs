@@ -48,7 +48,7 @@ public class CreateSubjectCommandHandler : IRequestHandler<CreateSubjectCommmand
 
         if (subject is not null)
         {
-            throw new AlreadyExsistsException(" There is a  subject with this name. Subject should be unique.  ");
+            throw new AlreadyExistsException(" There is a  subject with this name. Subject should be unique.  ");
         }
     }
 }

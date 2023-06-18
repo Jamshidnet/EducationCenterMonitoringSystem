@@ -17,16 +17,10 @@ public  class CreateTeacherCommand  : IRequest<TeacherDto>
 
     public DateTime BirthDate { get; set; }
 
-    private string _phoneNumber;
-
+    [RegularExpression(@"^\+998(33|9[0-9])\d{7}$", ErrorMessage = " Invalid PhoneNumber style. ")]
     public string PhoneNumber
     {
-        get => _phoneNumber; set
-        {
-            if (Regex.IsMatch(value, @"^\+998(33|91|90|99|94|97|95)"))
-                _phoneNumber = value;
-            else throw new Exception(" PhoneNUmber is not matched. ");
-        }
+        get; set;
     }
     [EmailAddress]
     public string Email { get; set; }
@@ -48,7 +42,7 @@ public class CreateTeacherCommandHandler : IRequestHandler<CreateTeacherCommand,
 
         FilterIfTeacherExsists(request.FirstName, request.LastName);
 
-        Teacher teacher = new Teacher()
+        Teacher teacher = new ()
         {
             FirstName = request.FirstName,
 
@@ -73,7 +67,7 @@ public class CreateTeacherCommandHandler : IRequestHandler<CreateTeacherCommand,
 
         if (teacher is not null)
         {
-            throw new AlreadyExsistsException(" There is a  teacher with this full name. Teacher should be unique.  ");
+            throw new AlreadyExistsException(" There is a  teacher with this full name. Teacher should be unique.  ");
         }
     }
 

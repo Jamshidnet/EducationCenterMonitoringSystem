@@ -50,10 +50,11 @@ namespace MonitoringSystem.Application.UseCases.Filters
                 {
                     if(Count>=request.TakeNum)
                         MatchedSubjects.Add(SubjectList[i]);
+                    Count = 0;
                 }
             }
 
-            IEnumerable<SubjectDto> result = _mapper.Map<SubjectDto[]>(SubjectList.Distinct());
+            IEnumerable<SubjectDto> result = _mapper.Map<SubjectDto[]>(MatchedSubjects);
 
             PaginatedList<SubjectDto> paginatedList =
                  PaginatedList<SubjectDto>.CreateAsync(

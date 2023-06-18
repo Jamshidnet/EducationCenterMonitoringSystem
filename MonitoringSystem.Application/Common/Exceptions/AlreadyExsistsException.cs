@@ -1,8 +1,8 @@
 ﻿namespace MonitoringSystem.Application.Common.Exceptions
 {
-    public  class AlreadyExsistsException : Exception
+    public  class AlreadyExistsException : Exception
     {
-        public AlreadyExsistsException(string message) : base(message)
+        public AlreadyExistsException(string message) : base(message)
         {
             
         }

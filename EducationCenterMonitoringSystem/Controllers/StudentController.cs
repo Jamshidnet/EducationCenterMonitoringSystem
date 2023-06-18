@@ -8,9 +8,12 @@ using MonitoringSystem.Application.UseCases.Students.Queries.PaginatedStudentQue
 using MonitoringSystem.Application.UseCases.Students.Queries.GetStudent;
 using MonitoringSystem.Application.UseCases.Subjects;
 using X.PagedList;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using EducationCenterMonitoringSystem.Filters;
 
 namespace EducationCenterMonitoringSystem.Controllers;
-
+[Authorize]
 public class StudentController : ApiBaseController
 {
     public StudentController(IAppCache appCache, IConfiguration configuration)

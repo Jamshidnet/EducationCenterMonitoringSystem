@@ -1,13 +1,11 @@
 ﻿using AutoMapper;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
+using MonitoringSystem.Application.Common;
 using MonitoringSystem.Application.Common.Exceptions;
 using MonitoringSystem.Application.Common.Interfaces;
 using MonitoringSystem.Application.UseCases.Students.Models;
 using MonitoringSystem.Domein.Entities;
 using System.ComponentModel.DataAnnotations;
-using System.Text.RegularExpressions;
 
 namespace MonitoringSystem.Application.UseCases.Students.Commands.CreateStudent;
 
@@ -19,15 +17,9 @@ public class CreateStudentCommand : IRequest<StudentDto>
 
     public DateTime BirthDate { get; set; }
 
-    private string _phoneNumber;
-    public string PhoneNumber
-    {
-        get => _phoneNumber; set
-        {
-            if(Regex.IsMatch(value,@"^\+998(33|91|90|99|94|97|95)"))
-                _phoneNumber = value;
-        }
-    }
+    [RegularExpression(@"^\+998(33|9[0-9])\d{7}$", ErrorMessage =" Invalid PhoneNumber style. ")]
+    public string PhoneNumber { get; set; }
+    
     [EmailAddress]
     public string Email { get; set; }
 
@@ -63,13 +55,13 @@ public class CreateStudentCommandHandler : IRequestHandler<CreateStudentCommand,
         return _mapper.Map<StudentDto>(student);
     }
 
-    private void FilterIfStudentExsists(string? PhoneNumber)
+    public  void FilterIfStudentExsists( string? PhoneNumber)
     {
         Student? student = _dbContext.Students.FirstOrDefault(x => x.PhoneNumber == PhoneNumber);
 
         if (student is not null)
         {
-            throw new AlreadyExsistsException(" There is a  student with this phonenumber. Student should be unique.  ");
+            throw new AlreadyExistsException(" There is a  student with this phonenumber. Student should be unique.  ");
         }
     }
 }

@@ -5,6 +5,7 @@ using MonitoringSystem.Application.Common.Exceptions;
 using MonitoringSystem.Application.Common.Interfaces;
 using MonitoringSystem.Application.UseCases.Students.Models;
 using MonitoringSystem.Domein.Entities;
+using System.ComponentModel.DataAnnotations;
 
 namespace MonitoringSystem.Application.UseCases.Students.Commands.UpdateStudent;
 
@@ -17,8 +18,10 @@ public class UpdateStudentCommand : IRequest<StudentDto>
 
     public DateTime BirthDate { get; set; }
 
+    [RegularExpression(@"^\+998(33|9[0-9])\d{7}$", ErrorMessage = " Invalid PhoneNumber style. ")]
     public string PhoneNumber { get; set; }
 
+    [EmailAddress]
     public string Email { get; set; }
 
 }

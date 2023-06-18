@@ -1,4 +1,5 @@
 ﻿using LazyCache;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MonitoringSystem.Application.UseCases.Students.Models;
 using MonitoringSystem.Application.UseCases.Students.Queries.PaginatedStudentQuery;
@@ -12,6 +13,9 @@ using X.PagedList;
 
 namespace EducationCenterMonitoringSystem.Controllers
 {
+
+
+    [Authorize]
     public class SubjectController : ApiBaseController
     {
 
