@@ -28,9 +28,9 @@ namespace EducationCenterMonitoringSystem.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         [AllowAnonymous]
         [HttpGet]
-        public IActionResult Error(string message)
+        public IActionResult Error(string errorMessage)
         {
-            return View(new ErrorViewModel() { Message= message });
+            return View(new ErrorViewModel() { Message= errorMessage });
         }
     }
 }
