@@ -16,6 +16,8 @@ namespace MonitoringSystem.Domein.Entities
 
         public int StudentRageNumber { get; set; }
 
+        public string Img { get; set; }
+
         public virtual ICollection<Grade> Grades { get; set; }
     }
 }

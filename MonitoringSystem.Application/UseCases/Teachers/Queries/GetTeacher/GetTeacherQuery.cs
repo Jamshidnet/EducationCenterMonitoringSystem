@@ -5,6 +5,7 @@ using MonitoringSystem.Application.UseCases.Teachers.Models;
 using MonitoringSystem.Application.Common.Exceptions;
 using MonitoringSystem.Application.Common.Interfaces;
 using MonitoringSystem.Domein.Entities;
+using Microsoft.AspNetCore.Hosting;
 
 namespace MonitoringSystem.Application.UseCases.Teachers.Queries.GetTeacher;
 
@@ -15,11 +16,12 @@ public class GetTeacherQueryHandler : IRequestHandler<GetTeacherQuery, TeacherWi
 {
     IApplicationDbContext _dbContext;
     IMapper _mapper;
-
-    public GetTeacherQueryHandler(IApplicationDbContext dbContext, IMapper mapper)
+    IWebHostEnvironment webHostEnvironment;
+    public GetTeacherQueryHandler(IApplicationDbContext dbContext, IMapper mapper, IWebHostEnvironment webHostEnvironment)
     {
         _dbContext = dbContext;
         _mapper = mapper;
+        this.webHostEnvironment = webHostEnvironment;
     }
 
 
@@ -32,11 +34,14 @@ public class GetTeacherQueryHandler : IRequestHandler<GetTeacherQuery, TeacherWi
 
     private Teacher FilterIfTeacherExsists(Guid id)
     {
-        Teacher? teacher = _dbContext.Teachers.Include(x=>x.Subjects).FirstOrDefault(x => x.Id == id);
-
+        Teacher? teacher = _dbContext.Teachers.Include(x=>x.Subjects)
+            .FirstOrDefault(x => x.Id == id);
+        teacher.Img = Path.GetRelativePath(webHostEnvironment
+            .WebRootPath, "/images/"+ teacher?.Img);
         if (teacher is null)
         {
-            throw new NotFoundException(" There is no teacher with this Id. ");
+            throw new NotFoundException(
+                " There is no teacher with this Id. ");
         }
 
         return teacher;

@@ -12,7 +12,7 @@ public class MappingProfile : Profile
 
     public MappingProfile()
     {
-    CreateMap<Student, StudentDto>();
+        CreateMap<Student, StudentDto>();
     CreateMap<Student, GetStudentsWithGrades>();
     CreateMap<Subject, SubjectDto>();
     CreateMap<Subject, BestSubjectDto>();

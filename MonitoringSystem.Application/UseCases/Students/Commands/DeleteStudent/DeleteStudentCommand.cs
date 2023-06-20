@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 using MonitoringSystem.Application.Common.Exceptions;
 using MonitoringSystem.Application.Common.Interfaces;
 using MonitoringSystem.Application.UseCases.Students.Models;
@@ -13,11 +15,12 @@ public class DeleteStudentCommandHandler : IRequestHandler<DeleteStudentCommand,
 {
     private IApplicationDbContext _dbContext;
     private IMapper _mapper;
-
-    public DeleteStudentCommandHandler(IApplicationDbContext dbContext, IMapper mapper)
+    IWebHostEnvironment _webHostEnvironment;
+    public DeleteStudentCommandHandler(IApplicationDbContext dbContext, IMapper mapper, IWebHostEnvironment webHostEnvironment)
     {
         _dbContext = dbContext;
         _mapper = mapper;
+        _webHostEnvironment = webHostEnvironment;
     }
 
     public async Task<StudentDto> Handle(DeleteStudentCommand request, CancellationToken cancellationToken)
@@ -33,7 +36,17 @@ public class DeleteStudentCommandHandler : IRequestHandler<DeleteStudentCommand,
     private Student FilterIfStudentExsists(Guid id)
     {
         Student? student = _dbContext.Students.FirstOrDefault(c => c.Id == id);
-
+        if (student.Img is not null)
+        {
+            string uplodFolder = Path.Combine(_webHostEnvironment.WebRootPath, "Images");
+            string filePath = Path.Combine(uplodFolder, student.Img);
+            FileInfo fileInfo = new (filePath);
+            if (fileInfo.Exists)
+            {
+                fileInfo.Delete();
+            }
+        }
+    
         if (student is null)
         {
             throw new NotFoundException(" There is no student with id. ");

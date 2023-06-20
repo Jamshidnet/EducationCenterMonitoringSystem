@@ -21,7 +21,7 @@
     }
 
     p {
-        text-align: center;
+        text-align: end;
         margin-bottom: 20px;
     }
 
@@ -70,7 +70,7 @@
         }
 </style>
 
-<h3>All Teachers</h3>
+<h3>Teachers</h3>
 
 
 
@@ -100,7 +100,6 @@
 
         </tbody>
     </table>
-</div>
 
 <div class="container fixed-bottom d-flex align-items-center justify-content-center">
     @Html.PagedListPager((IPagedList)Model,page => Url.Action("GetAll", "Teacher",new{ page= page}),
@@ -116,3 +115,4 @@
 <p>
     <a href="@Url.Action("Create")" class="btn btn-primary">Create Teacher</a>
 </p>
+</div>

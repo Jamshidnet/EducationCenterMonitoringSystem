@@ -14,6 +14,8 @@ namespace MonitoringSystem.Domein.Entities
 
         public string Email { get; set; }
 
+        public string Img { get; set; }
+
         public ICollection<Subject> Subjects { get; set; }
     }
 }

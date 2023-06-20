@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using MonitoringSystem.Application.Common.Exceptions;
 using MonitoringSystem.Application.Common.Interfaces;
@@ -15,13 +16,14 @@ public class GetStudentQueryHandler : IRequestHandler<GetStudentQuery, GetStuden
 {
     IApplicationDbContext _dbContext;
     IMapper _mapper;
+    IWebHostEnvironment webHostEnvironment;
 
-    public GetStudentQueryHandler(IApplicationDbContext dbContext, IMapper mapper)
+    public GetStudentQueryHandler(IApplicationDbContext dbContext, IMapper mapper, IWebHostEnvironment webHostEnvironment)
     {
         _dbContext = dbContext;
         _mapper = mapper;
+        this.webHostEnvironment = webHostEnvironment;
     }
-
 
     public async Task<GetStudentsWithGrades> Handle(GetStudentQuery request, CancellationToken cancellationToken)
     {
@@ -47,7 +49,8 @@ public class GetStudentQueryHandler : IRequestHandler<GetStudentQuery, GetStuden
             PhoneNumber = student.PhoneNumber,
             BirthDate = student.BirthDate,
             StudentRageNumber = student.StudentRageNumber,
-            Grades = mappedSt
+            Grades = mappedSt,
+            Img = Path.GetRelativePath(webHostEnvironment.WebRootPath,"/images/" + student?.Img)
         };
         
 

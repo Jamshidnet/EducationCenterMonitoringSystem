@@ -1,4 +1,6 @@
-﻿namespace MonitoringSystem.Application.UseCases.Teachers.Models
+﻿using Microsoft.AspNetCore.Http;
+
+namespace MonitoringSystem.Application.UseCases.Teachers.Models
 {
     public class TeacherDto
     {
@@ -12,6 +14,8 @@
         public string PhoneNumber { get; set; }
 
         public string Email { get; set; }
+        public string Img { get; set; }
 
+        public IFormFile? ImageFile { get; set; }
     }
 }

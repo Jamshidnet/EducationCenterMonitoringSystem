@@ -11,9 +11,11 @@ using X.PagedList;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using EducationCenterMonitoringSystem.Filters;
+using Microsoft.AspNetCore.RateLimiting;
+using Microsoft.Extensions.Hosting;
 
 namespace EducationCenterMonitoringSystem.Controllers;
-[Authorize]
+
 public class StudentController : ApiBaseController
 {
     public StudentController(IAppCache appCache, IConfiguration configuration)
@@ -23,11 +25,12 @@ public class StudentController : ApiBaseController
     }
 
     [HttpGet]
+    [EnableRateLimiting("Sliding")]
     public async ValueTask<IActionResult> GetAll(int page = 1)
     {
         IPagedList<StudentDto> query = (await Mediator
             .Send(new GetAllStudentQuery()))
-            .ToPagedList(page, 10);
+            .ToPagedList(page, 8);
         return View(query);
     }
 
@@ -48,6 +51,7 @@ public class StudentController : ApiBaseController
 
 
     [HttpPost]
+    [EnableRateLimiting("Token")]
     public async ValueTask<IActionResult> Create([FromForm] CreateStudentCommand student)
     {
         await Mediator.Send(student);
@@ -55,7 +59,7 @@ public class StudentController : ApiBaseController
     }
 
 
-
+    
     public async ValueTask<IActionResult> Delete(Guid Id)
     {
         await Mediator.Send(new DeleteStudentCommand(Id));
@@ -63,13 +67,12 @@ public class StudentController : ApiBaseController
     }
 
     [HttpGet]
-    public async ValueTask<IActionResult> Update(StudentDto student)=>
-          View(student);
+    public async ValueTask<IActionResult> Update(StudentDto student) => View(student);
 
     [HttpPost]
     public async ValueTask<IActionResult> Update([FromForm] UpdateStudentCommand student)
     {
-        await Mediator.Send(student);
+            await Mediator.Send(student);
         return RedirectToAction("GetAll");
     }
 }

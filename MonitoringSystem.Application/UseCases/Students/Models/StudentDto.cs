@@ -1,4 +1,6 @@
-﻿namespace MonitoringSystem.Application.UseCases.Students.Models
+﻿using Microsoft.AspNetCore.Http;
+
+namespace MonitoringSystem.Application.UseCases.Students.Models
 {
     public  class StudentDto
     {
@@ -14,5 +16,10 @@
         public string Email { get; set; }
 
         public int StudentRageNumber { get; set; }
+        public string  Img { get; set;}
+
+        public IFormFile? ImageFile { get; set; }
+
+        public bool IsImgChange { get; set; }
     }
 }

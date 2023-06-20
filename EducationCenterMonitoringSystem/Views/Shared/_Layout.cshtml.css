@@ -2,11 +2,11 @@
 for details on configuring this project to bundle and minify static web assets. */
 
 /* Sidebar styles */
-.sidebar {
+/*.sidebar {
     width: 250px;
     height: 100%;
-    background-color: #333;
-    color: #fff;
+    background-color: black;
+    color: white;
     padding-top: 20px;
 }
 
@@ -35,7 +35,50 @@ for details on configuring this project to bundle and minify static web assets. 
 
             .list-unstyled li a:hover {
                 color: #aaa;
-            }
+            }*/
+
+.navbar {
+    background-color: black !important;
+    color: white !important;
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #ffffff !important; /* Change text color to white */
+}
+
+.navbar-nav .nav-item .nav-link {
+    color: #ffffff !important; /* Change text color to white */
+    font-weight: bold;
+}
+
+    .navbar-nav .nav-item .nav-link:hover {
+        color: white !important;
+    }
+
+.container {
+    margin-top: 30px;
+}
+
+/* Add the following styles for the sidebar */
+.navbar-nav {
+    /* Change background color of the sidebar to dark */
+
+    color: white !important;
+}
+
+    .navbar-nav .nav-item .nav-link {
+        border-top: 1px solid transparent !important;
+        border-bottom: 1px solid transparent !important;
+        /* Change text color to white */
+    }
+
+        .navbar-nav .nav-item .nav-link:hover {
+            border-top: 1px solid white !important;
+            border-bottom: 1px solid white !important;
+            /* Change hover text color to white */
+        }
 
 
 a {
@@ -70,10 +113,3 @@ button.accept-policy {
   line-height: inherit;
 }
 
-.footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  white-space: nowrap;
-  line-height: 60px;
-}

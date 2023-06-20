@@ -20,7 +20,7 @@
     }
 
     p {
-        text-align: center;
+        text-align: end;
         margin-bottom: 20px;
     }
 
@@ -71,7 +71,7 @@
     .search-form {
         display: flex;
         align-items: center;
-        margin-bottom: 20px;
+        margin-bottom: 50px;
     }
 
     .search-input {
@@ -115,12 +115,14 @@
 
 <h3> Students</h3>
 
+<div class="table-container">
+
 <form action="@Url.Action("SearchedStudents", "Filters")" method="get">
     <input type="text" name="Pattern" placeholder="Enter search term" />
     <button type="submit">Search</button>
 </form>
 
-<div class="table-container">
+
     <table class="table">
         <thead>
             <tr>
@@ -139,15 +141,16 @@
                         <a href="@Url.Action("Update", student)">Edit</a>
                         <a href="@Url.Action("Details", new { id = student.Id })">Details</a>
                         <a href="@Url.Action("Delete", new { id = student.Id })">Delete</a>
+
                     </td>
                 </tr>
             }
 
         </tbody>
     </table>
-</div>
-
-
+    <p>
+        <a href="@Url.Action("Create")" class="btn btn-primary">Create Student</a>
+    </p>
 <div class="container fixed-bottom d-flex align-items-center justify-content-center">
     @Html.PagedListPager((IPagedList)Model,page => Url.Action("GetAll", "Student",new{ page= page}),
     new X.PagedList.Web.Common.PagedListRenderOptions
@@ -158,7 +161,5 @@
     PageClasses = new[] { "page-link" },
     })
 </div>
+</div>
 
-<p>
-    <a href="@Url.Action("Create")" class="btn btn-primary">Create Student</a>
-</p>

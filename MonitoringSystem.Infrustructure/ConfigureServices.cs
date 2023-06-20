@@ -17,7 +17,6 @@ public static class ConfigureServices
         {
             options.UseNpgsql(connectionString: configuration.GetConnectionString("DbConnection"));
         });
-      // services.AddDefaultIdentity<IdentityUser>
 
         services.AddScoped<AuditableEntitySaveChangesInterceptor>();
         

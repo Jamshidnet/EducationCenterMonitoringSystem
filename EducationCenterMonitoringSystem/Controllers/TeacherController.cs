@@ -1,8 +1,5 @@
 ﻿using LazyCache;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Caching.Memory;
-using MonitoringSystem.Application.UseCases.Subjects.Models;
-using MonitoringSystem.Application.UseCases.Subjects;
 using MonitoringSystem.Application.UseCases.Teachers.Commands.CreateTeacher;
 using MonitoringSystem.Application.UseCases.Teachers.Commands.DeleteTeacher;
 using MonitoringSystem.Application.UseCases.Teachers.Commands.UpdateTeacher;
@@ -26,7 +23,7 @@ namespace EducationCenterMonitoringSystem.Controllers
         {
             IPagedList<TeacherDto> query = (await Mediator
                 .Send(new GetAllTeacherQuery()))
-                .ToPagedList(page, 10);
+                .ToPagedList(page, 8);
             return View(query);
         }
 
@@ -62,10 +59,7 @@ namespace EducationCenterMonitoringSystem.Controllers
         }
 
         [HttpGet]
-        public async ValueTask<IActionResult> Update(TeacherWithSubjectsDto teacher)
-        {
-            return View(teacher);
-        }
+        public async ValueTask<IActionResult> Update(TeacherWithSubjectsDto teacher) => View(teacher);
 
         [HttpPost]
         public async ValueTask<IActionResult> Update([FromForm] UpdateTeacherCommand teacher)

@@ -22,10 +22,11 @@
     h3 {
         text-align: center;
         margin-top: 20px;
+        text-decoration-style: dashed;
     }
 
     p {
-        text-align: center;
+        text-align: end;
         margin-bottom: 20px;
     }
 
@@ -103,7 +104,6 @@
 
         </tbody>
     </table>
-</div>
 <div class="container fixed-bottom d-flex align-items-center justify-content-center">
     @Html.PagedListPager((IPagedList)Model,page => Url.Action("GetAll", "Subject",new{pageNumber= page}),
     new X.PagedList.Web.Common.PagedListRenderOptions
@@ -119,3 +119,4 @@
 <p>
     <a href="@Url.Action("Create")" class="btn btn-primary">Create Subject</a>
 </p>
+</div>

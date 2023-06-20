@@ -3,7 +3,7 @@
 
 @{
     ViewData["Title"] = "Create Teacher";
-    Layout = "~/Views/Shared/_Layout.cshtml"; // Optionally, specify a layout
+    Layout = "~/Views/Shared/_MyLayout.cshtml"; // Optionally, specify a layout
 }
 
 <style>
@@ -22,65 +22,98 @@
     }
 
     label {
-        display: block;
         font-weight: bold;
     }
 
-    .form-control {
+    input[type="text"],
+    input[type="date"],
+    input[type="email"],
+    input[type="file"] {
         width: 100%;
-        padding: 6px 10px;
+        padding: 8px;
         border: 1px solid #ccc;
         border-radius: 4px;
         box-sizing: border-box;
     }
 
     .text-danger {
-        color: #dc3545;
+        color: red;
+    }
+
+    .btn {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+        .btn:hover {
+            background-color: #45a049;
+        }
+
+    .form-control-file {
+        display: inline-block;
+        padding: 6px 12px;
+        cursor: pointer;
+    }
+
+    /* Custom styles for the form layout */
+
+    form {
+        max-width: 400px;
+        margin: 0 auto;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    input[type="file"] {
+        padding-top: 12px;
+        padding-bottom: 12px;
+    }
+
+    .form-group {
+        margin-bottom: 25px;
     }
 
     .btn-primary {
         background-color: #007bff;
-        color: #fff;
-        padding: 8px 16px;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
     }
+
+        .btn-primary:hover {
+            background-color: #0069d9;
+        }
+
 </style>
 
 <h1>Create Teacher</h1>
 
-<form asp-action="Create" method="post">
+<form asp-action="Create" method="post" enctype="multipart/form-data">
     <div class="form-group">
         <label asp-for="FirstName">First Name:</label>
         <input asp-for="FirstName" class="form-control" required />
         <span asp-validation-for="FirstName" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
         <label asp-for="LastName">Last Name:</label>
         <input asp-for="LastName" class="form-control" required />
         <span asp-validation-for="LastName" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
         <label asp-for="BirthDate">Birth Date:</label>
         <input asp-for="BirthDate" type="date" class="form-control" required />
         <span asp-validation-for="BirthDate" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
         <label asp-for="PhoneNumber">Phone Number:</label>
         <input asp-for="PhoneNumber" class="form-control" required />
         <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
         <label asp-for="Email">Email:</label>
         <input asp-for="Email" class="form-control" required />
         <span asp-validation-for="Email" class="text-danger"></span>
-    </div>
-
+        <label asp-for="Img" class="control-label">Picture</label>
+        <input type="file" asp-for="Img" class="form-control-file" />
+        <span asp-validation-for="Img" class="text-danger"></span>
+        </div>
     <button type="submit" class="btn btn-primary">Create</button>
 </form>
 
