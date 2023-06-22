@@ -8,13 +8,11 @@ using MonitoringSystem.Application.UseCases.Students.Queries.PaginatedStudentQue
 using MonitoringSystem.Application.UseCases.Students.Queries.GetStudent;
 using MonitoringSystem.Application.UseCases.Subjects;
 using X.PagedList;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using EducationCenterMonitoringSystem.Filters;
 using Microsoft.AspNetCore.RateLimiting;
-using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Cors;
 
 namespace EducationCenterMonitoringSystem.Controllers;
+
 
 public class StudentController : ApiBaseController
 {
@@ -26,6 +24,7 @@ public class StudentController : ApiBaseController
 
     [HttpGet]
     [EnableRateLimiting("Sliding")]
+  //  [EnableCors("PolicyForPDP")]
     public async ValueTask<IActionResult> GetAll(int page = 1)
     {
         IPagedList<StudentDto> query = (await Mediator

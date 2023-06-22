@@ -9,9 +9,11 @@ using MonitoringSystem.Application.UseCases.Grades.Queries.PaginatedQuerty;
 using MonitoringSystem.Application.UseCases.Subjects;
 using MonitoringSystem.Application.UseCases.Students.Queries.PaginatedStudentQuery;
 using X.PagedList;
+using Microsoft.AspNetCore.Cors;
 
 namespace EducationCenterMonitoringSystem.Controllers
 {
+   
     public class GradeController : ApiBaseController
     {
 

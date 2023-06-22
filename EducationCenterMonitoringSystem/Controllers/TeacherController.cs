@@ -1,4 +1,5 @@
 ﻿using LazyCache;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using MonitoringSystem.Application.UseCases.Teachers.Commands.CreateTeacher;
 using MonitoringSystem.Application.UseCases.Teachers.Commands.DeleteTeacher;
@@ -10,6 +11,7 @@ using X.PagedList;
 
 namespace EducationCenterMonitoringSystem.Controllers
 {
+    [EnableCors("PolicyForMicrosoft")]
     public class TeacherController : ApiBaseController
     {
         public TeacherController(IAppCache appCache, IConfiguration configuration)

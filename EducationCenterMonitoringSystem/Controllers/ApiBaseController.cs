@@ -2,13 +2,15 @@
 using LazyCache;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EducationCenterMonitoringSystem.Controllers
 {
     [Authorize]
-  //[GlobalExceptionFilter]
+    //[GlobalExceptionFilter]
+   // [EnableCors("PolicyForPDP")]
     public class ApiBaseController : Controller
     {
         private IMediator? _mediator;

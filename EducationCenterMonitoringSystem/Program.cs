@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using EducationCenterMonitoringSystem.Filters;
 using EducationCenterMonitoringSystem.Logging;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,12 +23,37 @@ ConfigurationServices.AddRateLimiters(builder);
 
 //LoggingConfigurations.UseLogging(builder.Configuration);
 
+builder.Services.AddAuthentication().AddGoogle(x =>
+    {
+        x.ClientId = builder.Configuration["Web:client_id"];
+        x.ClientSecret = builder.Configuration["Web:client_secret"];
+    }
+);
+
 builder.Host.UseSerilog();
 builder.Services.AddLazyCache();
 builder.Services.AddControllersWithViews();
 builder.Services.AddInfrastructureService(builder.Configuration);
 builder.Services.AddApplicationService();
+//builder.Services.AddCors(option => option.AddPolicy(
+//    "PolicyForPDP",
+//    x =>
+//    {
+//        x.AllowCredentials();
+//        x.WithOrigins("https://online.pdp.uz/");
+//    }
+//    ));
 
+builder.Services.AddCors(option => option.AddPolicy(
+    "PolicyForMicrosoft",
+    x =>
+    {
+        x.AllowCredentials();
+        x.WithOrigins("https://www.microsoft.com/");
+        x.WithMethods("Get");
+        x.WithHeaders("Microsoft");  
+    }
+    ));
 
 
 var app = builder.Build();
@@ -40,10 +66,17 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseRouting();
+app.UseCors(
+    x =>
+    {
+        x.AllowCredentials();
+        x.WithOrigins("https://online.pdp.uz/");
+        x.WithMethods("Create");
+    });
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseEndpoints(endpoints => {
