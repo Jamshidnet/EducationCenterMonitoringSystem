@@ -11,7 +11,7 @@ using X.PagedList;
 
 namespace EducationCenterMonitoringSystem.Controllers
 {
-    [EnableCors("PolicyForMicrosoft")]
+   // [EnableCors("PolicyForMicrosoft")]
     public class TeacherController : ApiBaseController
     {
         public TeacherController(IAppCache appCache, IConfiguration configuration)

@@ -8,6 +8,7 @@ namespace EducationCenterMonitoringSystem.Logging
     {
         public static void UseLogging(IConfiguration configuration)
         {
+
             Log.Logger = new LoggerConfiguration()
                        .ReadFrom.Configuration(configuration)
                        .WriteTo.TelegramBot(
@@ -15,6 +16,7 @@ namespace EducationCenterMonitoringSystem.Logging
                            chatId: configuration["TelegramBot:ChatId"],
                            restrictedToMinimumLevel: LogEventLevel.Information
                        )
+
                        .Enrich.FromLogContext()
                        .CreateLogger();
         }

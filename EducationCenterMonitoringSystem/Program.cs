@@ -4,10 +4,7 @@ using EducationCenterMonitoringSystem.RataLimiters;
 using Serilog;
 using MonitoringSystem.Infrustructure.Persistence;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using EducationCenterMonitoringSystem.Filters;
-using EducationCenterMonitoringSystem.Logging;
-using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -44,16 +41,16 @@ builder.Services.AddApplicationService();
 //    }
 //    ));
 
-builder.Services.AddCors(option => option.AddPolicy(
-    "PolicyForMicrosoft",
-    x =>
-    {
-        x.AllowCredentials();
-        x.WithOrigins("https://www.microsoft.com/");
-        x.WithMethods("Get");
-        x.WithHeaders("Microsoft");  
-    }
-    ));
+//builder.Services.AddCors(option => option.AddPolicy(
+//    "PolicyForMicrosoft",
+//    x =>
+//    {
+//        x.AllowCredentials();
+//        x.WithOrigins("https://www.microsoft.com/");
+//        x.WithMethods("Get");
+//        x.WithHeaders("Microsoft");  
+//    }
+//    ));
 
 
 var app = builder.Build();
@@ -70,14 +67,15 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
-app.UseCors(
-    x =>
-    {
-        x.AllowCredentials();
-        x.WithOrigins("https://online.pdp.uz/");
-        x.WithMethods("Create");
-    });
-app.UseAuthentication();
+//app.UseCors(
+//    x =>
+//    {
+//        x.AllowCredentials();
+//        x.WithOrigins("https://online.pdp.uz/");
+//        x.WithMethods("Create");
+//    });
+//app.UseAuthentication();
+
 app.UseAuthorization();
 app.UseEndpoints(endpoints => {
     endpoints.MapControllerRoute(name: "login",
